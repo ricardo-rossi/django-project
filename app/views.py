@@ -20,21 +20,17 @@ def appointments(request):
 
 # The register() controller creates a new User in the database
 def register(request):
-    # Get the values entered into the form and put them in variables
-    form_name = request.POST['name']
-    form_email = request.POST['email']
-    form_password = request.POST['password']
-    form_dob = request.POST['dob']
 
+    # Check the validity of the form data - validate() is in UserManager (file models.py)
     is_valid = User.objects.validate(request.POST)
-    return HttpResponse(is_valid)
 
-
-    # Create a new User by using the User model's create method like this:
-    # user = User.objects.create(name=form_name, email=form_email, password=form_password, dob=form_dob)
-
-
-    # return redirect('/appointments')
+    if is_valid:
+        # Passed validation so register the user
+        User.objects.register(request.POST)
+        return redirect('/appointments')
+    else:
+        # Render main again passing the status of validation to it
+        return render(request, 'main.html', {'is_valid': is_valid})
 
 
 def login(request):

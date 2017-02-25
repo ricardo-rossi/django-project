@@ -22,12 +22,24 @@ urlpatterns = [
     # Routes to index() controller method on views.py
     url(r'^$', views.index),
 
-    # handles requests for '/show'
-    # Routes to show() controller method on views.py
-    url(r'^show$', views.show),
+    # handles requests for '/main'
+    # Routes to main() controller method on views.py
+    url(r'^main$', views.main),
+
+    # handles requests for '/login'
+    # Routes to login() controller method on views.py
+    url(r'^login$', views.login),
+
+    # handles requests for '/register'
+    # Routes to register() controller method on views.py
+    url(r'^register', views.register),
+
+    # handles requests for '/appointments'
+    # Routes to appointments() controller method on views.py
+    url(r'^appointments', views.appointments),
 
     # Example of a url route using parameters
     # This route will match any of these /users/1  /users/2 but not /users/bob
-    url(r'^users/(?P<user_id>[\d]+$)', views.user)
+    # url(r'^users/(?P<user_id>[\d]+$)', views.user)
 
 ]

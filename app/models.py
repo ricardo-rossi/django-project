@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import bcrypt
+import re
 from django.db import models
 
 
@@ -13,6 +14,8 @@ class UserManager(models.Manager):
         # Check that 'email' is not empty
         elif len(post_data['email']) == 0:
             error = "Please provide an Email"
+        elif not re.match(r"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$", post_data['email']):
+            error = "Not a valid Email"
         # Check that 'password' length is not less than 8 chars
         elif len(post_data['password']) < 8:
             error = "Please enter a Password with at least 8 characters"

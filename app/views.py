@@ -17,7 +17,7 @@ def register(request):
 
     if error:
         # Render form again passing the validation error to it
-        return render(request, 'index.html', {'error': error})
+        return render(request, 'index.html', {'registration_error': error})
     else:
         # Passed validation so register the user
         user = User.objects.register(request.POST)
@@ -32,7 +32,7 @@ def login(request):
     response = User.objects.login(request.POST)
 
     if len(response['error']) > 0:
-        return HttpResponse(response['error'])
+        return render(request, 'index.html', {'login_error': response['error']})
     else:
         # Store logged in user in session
         request.session['user_id'] = response['user'].id

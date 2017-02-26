@@ -14,8 +14,12 @@ class UserManager(models.Manager):
         # Check that 'email' is not empty
         elif len(post_data['email']) == 0:
             error = "Please provide an Email"
+        # Check that the email passes regular expression validation for a valid email
         elif not re.match(r"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$", post_data['email']):
             error = "Not a valid Email"
+        # Check to see if this email has already been registered
+        elif User.objects.filter(email=post_data['email']).count() > 0:
+            error = "The Email you provided is already registered"
         # Check that 'password' length is not less than 8 chars
         elif len(post_data['password']) < 8:
             error = "Please enter a Password with at least 8 characters"

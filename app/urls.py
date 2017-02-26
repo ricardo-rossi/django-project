@@ -22,17 +22,13 @@ urlpatterns = [
     # Routes to index() controller method on views.py
     url(r'^$', views.index),
 
-    # handles requests for '/main'
-    # Routes to main() controller method on views.py
-    url(r'^main$', views.main),
+    # handles requests for '/register'
+    # Routes to register() controller method on views.py
+    url(r'^register', views.register),
 
     # handles requests for '/login'
     # Routes to login() controller method on views.py
     url(r'^login$', views.login),
-
-    # handles requests for '/register'
-    # Routes to register() controller method on views.py
-    url(r'^register', views.register),
 
     # handles requests for '/appointments'
     # Routes to appointments() controller method on views.py

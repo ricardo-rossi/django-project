@@ -26,13 +26,23 @@ class UserManager(models.Manager):
         elif len(post_data['dob']) == 0:
             error = "Please provide a Date of Birth"
 
+        # Return the error if any
         return error
 
     def login(self, post_data):
-        # Running a login function!
-        # If successful login occurs, maybe return {'theuser':user} where user is a user object?
-        # If unsuccessful, maybe return { 'errors':['Login unsuccessful'] }
-        return
+        # Attempting to login a user
+        # Get the values entered into the form and put them in variables
+        form_email = post_data['email']
+        form_password = post_data['password']
+        # Lookup the user
+        user = User.objects.filter(email=form_email)
+
+        if user.count() > 0 and bcrypt.checkpw(form_password.encode(), user[0].password.encode()):
+            # Return the logged in user
+            return {'error': '', 'user': user[0]}
+
+        # Can't find user. Return error
+        return {'error': 'Login unsuccessful'}
 
     def register(self, post_data):
         # Register a user here
@@ -41,17 +51,17 @@ class UserManager(models.Manager):
         form_email = post_data['email']
         form_password = post_data['password']
         form_dob = post_data['dob']
-
         # Encrypt the password
-        bcrypt_password = bcrypt.hashpw(form_password.encode('utf-8'), bcrypt.gensalt())
-
+        bcrypt_password = bcrypt.hashpw(form_password.encode(), bcrypt.gensalt())
         # Create a new User by using the User model's create method like this:
         user = User.objects.create(name=form_name, email=form_email, password=bcrypt_password, dob=form_dob)
 
+        # Returned the registered user
         return user
 
 
 class User(models.Model):
+    # Define all fields in the User model
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=100)

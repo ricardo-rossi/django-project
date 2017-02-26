@@ -7,15 +7,7 @@ from models import User
 
 
 def index(request):
-    return redirect('/main')
-
-
-def main(request):
-    return render(request, 'main.html')
-
-
-def appointments(request):
-    return render(request, 'appointments.html')
+    return render(request, 'index.html')
 
 
 # The register() controller creates a new User in the database
@@ -25,16 +17,33 @@ def register(request):
 
     if error:
         # Render form again passing the validation error to it
-        return render(request, 'main.html', {'error': error})
+        return render(request, 'index.html', {'error': error})
     else:
         # Passed validation so register the user
-        User.objects.register(request.POST)
+        user = User.objects.register(request.POST)
+        # Store registered user in session
+        request.session['user_id'] = user.id
         # Redirect to next page
         return redirect('/appointments')
 
 
 def login(request):
-    return redirect('/')
+    # Attempt to login
+    response = User.objects.login(request.POST)
+
+    if len(response['error']) > 0:
+        return HttpResponse(response['error'])
+    else:
+        # Store logged in user in session
+        request.session['user_id'] = response['user'].id
+        return redirect('/appointments')
+
+
+def appointments(request):
+    if request.session is not None:
+        return render(request, 'appointments.html')
+    else:
+        return redirect('/')
 
 # def user(request, user_id):
 #     return HttpResponse(user_id)

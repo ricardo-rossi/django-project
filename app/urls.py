@@ -30,6 +30,10 @@ urlpatterns = [
     # Routes to login() controller method on views.py
     url(r'^login$', views.login),
 
+    # handles requests for '/logout'
+    # Routes to logout() controller method on views.py
+    url(r'^logout', views.logout),
+
     # handles requests for '/appointments'
     # Routes to appointments() controller method on views.py
     url(r'^appointments', views.appointments),

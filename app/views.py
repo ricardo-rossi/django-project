@@ -39,9 +39,15 @@ def login(request):
         return redirect('/appointments')
 
 
+def logout(request):
+    request.session['user_id'] = None
+    return redirect('/')
+
+
 def appointments(request):
-    if request.session is not None:
-        return render(request, 'appointments.html')
+    if request.session['user_id'] is not None:
+        user = User.objects.filter(id=request.session['user_id'])
+        return render(request, 'appointments.html', {'user': user[0]})
     else:
         return redirect('/')
 
